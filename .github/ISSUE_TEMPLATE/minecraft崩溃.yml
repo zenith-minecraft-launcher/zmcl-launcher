@@ -1,48 +1,44 @@
-name: "[旧版] 综合 Bug 反馈"
-description: "遇见了与启动器功能相关的 Bug"
-type: "Bug"
+name: "Minecraft 崩溃"
+description: "ZMCL 提示 “Minecraft 出现错误”，或游戏崩溃"
+title: "[MC崩溃]"
+labels: [新提交]
+type: [bug]
 body:
-- type: checkboxes
-  id: "yml-1"
-  attributes:
-    label: "检查项"
-    description: "请逐个检查下列项目，并勾选确认。"
-    options:
-    - label: "我已在 [Issues 页面](https://github.com/PCL-Community/PCL2-CE/issues?q=is%3Aissue+) 中搜索，确认了这一 Bug 未被提交过"
+  - type: checkboxes
+    id: "yml-1"
+    attributes:
+      label: "检查项"
+      description: "请逐个检查下列项目，并勾选确认。"
+      options:
+        - label: "**我所启动的游戏不是整合包，且未安装任何 Mod。** 安装 Mod 后的崩溃基本不是 ZMCL 导致的，请 **不要** 提交反馈。你可以前往相关社区群求助，但这里不是求助的地方……"
+          required: false
+        - label: "**我已确认该崩溃是启动器本身造成，非游戏/模组问题。**"
+          required: true
+        - label: "我已在 [Issues 页面](./issues) 中搜索，确认了这一 Bug 未被提交过。"
+          required: true
+
+  - type: textarea
+    id: "yml-2"
+    attributes:
+      label: 描述
+      description: "详细描述具体表现。"
+    validations:
       required: true
-    - label: "我确认只是全部选中而没有[仔细确认](https://github.com/PCL-Community/PCL2-CE/issues?q=is%3Aissue+)就直接提交了这个 Issue，并且同意这个 Issue 可以直接被关闭"
+
+  - type: textarea
+    id: "yml-3"
+    attributes:
+      label: ZMCL 错误报告、日志与附件
+      description: "上传 ZMCL 提供的错误报告（在崩溃时选择导出错误报告）。如果没有，也可以上传 ZMCL 文件夹中的日志文件。"
+      placeholder: "先点击这个文本框，然后再将文件直接拖拽到文本框中以上传。"
+    validations:
+      required: true
+
+  - type: textarea
+    id: "yml-4"
+    attributes:
+      label: 补充信息（可选）
+      description: "如有其他启动器对比、截图等可以粘贴在这里"
+      placeholder: "粘贴截图、对比启动日志等补充内容"
+    validations:
       required: false
-    - label: "我确认正在使用当前更新分支的最新版 PCL CE，若不是，此 Issue 可能会被直接关闭（更新方式：启动器 `设置-关于-软件更新` 检查更新，或在 [Releases](https://github.com/PCL-Community/PCL2-CE/releases) 页面下载）"
-      required: true
-    - label: "我确认会详细描述我所遇到的问题，并附上日志和截图，而不是随便填点东西敷衍了事。"
-      required: true
-- type: textarea
-  id: "yml-2"
-  attributes:
-    label: 描述
-    description: "详细描述该 Bug 的具体表现。"
-  validations:
-    required: true
-- type: textarea
-  id: "yml-3"
-  attributes:
-    label: 重现步骤
-    description: "详细描述要怎么操作才能再次触发这个 Bug。"
-    placeholder: |
-      示例：
-      1、点击 xxxx
-      2、往下滚，然后点击 xxxx
-  validations:
-    required: true
-- type: textarea
-  id: "yml-4"
-  attributes:
-    label: 日志与附件
-    description: "在问题发生后立即使用 `设置-查看日志-导出日志` 并上传导出的压缩包。**若手动关掉了启动器或启动器直接崩溃，请重启之后使用 `导出全部日志` 而不是 `导出日志`，否则导出的日志可能不包含故障关键信息。**"
-    placeholder: |
-      先点击这个文本框，然后再将文件直接拖拽到文本框中以上传。
-      如果有相关截图或文件，也请一并上传。
-      请勿自行判断是否需要日志，日志文件并不仅仅包含发生错误的信息，还可能包含其它关键信息。
-      如果缺少相关日志用于分析问题，此 Issue 可能会被直接关闭。
-  validations:
-    required: true
