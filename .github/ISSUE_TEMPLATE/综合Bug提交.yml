@@ -1,5 +1,5 @@
 name: "综合 Bug 反馈"
-description: "遇见了没有细分选项的其他 Bug"
+description: "你可以在这里提交任何类型的Bug"
 title: "[综合Bug]"
 labels: [新提交]
 type: "Bug"
