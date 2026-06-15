@@ -1,0 +1,15 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 快速渠道
+        ### [QQ 群 | QQ Group](这里填你的QQ群跳转链接)
+        ZMCL 官方QQ交流群
+
+        ---
+        ### [Discord 服务器 | Discord Server](这里填你的Discord邀请链接)
+        ZMCL 官方Discord服务器
+
+        ---
+        ### [其他反馈 | Others](./discussions)
+        前往讨论区反馈杂项问题
