@@ -1,6 +1,6 @@
 # **Zenith · Minecraft 启动器**
 
-> 一款现代化、功能完备的 Minecraft 启动器，基于 Electron 构建，支持多平台（Windows / macOS / Linux）。
+> 一款现代化、功能完备的 Minecraft 启动器，基于 Electron 构建。
 
 ---
 
