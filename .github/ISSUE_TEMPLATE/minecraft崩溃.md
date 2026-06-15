@@ -1,11 +1,9 @@
 ---
 name: Minecraft崩溃
 about: 在启动时遇见Minecraft崩溃（启动器造成，而不是模组冲突）
-title: "[MC崩溃]"
-labels: "\U0001F195新提交"
-assignees: jasondeng843
-type: Bug
-
+title: '[MC崩溃]'
+labels: ''
+assignees: ''
 ---
 
 ## 检查项
