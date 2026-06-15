@@ -1,0 +1,1705 @@
+/* ===========================================================
+ * 模组加载器版本选择样式
+ * =========================================================== */
+
+/* 加载器分类容器 */
+.loader-category {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.loader-category:hover {
+  border-color: rgba(127, 127, 127, 0.4);
+}
+
+.loader-category.selected {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, rgba(79, 140, 255, 0.08), rgba(126, 91, 255, 0.04));
+}
+
+.loader-category.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loader-category.disabled:hover {
+  border-color: var(--border);
+}
+
+/* 加载器被管理员禁用（Forge/NeoForge 正在修复） */
+.loader-category.loader-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, rgba(255, 204, 102, 0.05), transparent);
+  border-color: rgba(255, 193, 7, 0.3);
+}
+
+.loader-category.loader-disabled:hover {
+  border-color: rgba(255, 193, 7, 0.5);
+}
+
+.loader-disabled-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #f39c12;
+  background: rgba(255, 193, 7, 0.15);
+  border-radius: 12px;
+}
+
+/* 分类头部 */
+.loader-category-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.loader-category-header:hover {
+  background: var(--bg-hover);
+}
+
+/* 展开箭头图标 */
+.loader-expand-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.loader-expand-icon.expanded {
+  transform: rotate(180deg);
+}
+
+/* 版本列表容器 */
+.loader-version-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* 版本项 */
+.loader-version-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px 12px 72px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-bottom: 1px solid rgba(127, 127, 127, 0.1);
+}
+
+.loader-version-item:last-child {
+  border-bottom: none;
+}
+
+.loader-version-item:hover {
+  background: var(--bg-hover);
+}
+
+.loader-version-item.selected {
+  background: linear-gradient(135deg, rgba(79, 140, 255, 0.12), rgba(126, 91, 255, 0.06));
+}
+
+/* 版本单选按钮 */
+.version-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.loader-version-item.selected .version-radio {
+  border-color: var(--accent);
+}
+
+.version-radio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: var(--transition);
+}
+
+.loader-version-item.selected .version-radio-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 版本信息 */
+.version-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.version-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* 版本标签 */
+.version-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.version-tag {
+  background: rgba(79, 140, 255, 0.15);
+  color: var(--accent);
+}
+
+.version-tag.recommended {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+/* 加载器标签 */
+.loader-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+}
+
+.loader-tag.vanilla {
+  background: rgba(139, 195, 74, 0.15);
+  color: #8bc34a;
+}
+
+/* 滚动条样式 */
+.loader-version-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.loader-version-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.loader-version-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.loader-version-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ===========================================================
+ * 多文件下载进度样式
+ * =========================================================== */
+
+.progress-files {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.progress-files::-webkit-scrollbar {
+  width: 6px;
+}
+
+.progress-files::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.progress-files::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.progress-file {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  transition: var(--transition);
+}
+
+.progress-file.file-state-done {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), transparent);
+}
+
+.progress-file.file-state-error {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.06), transparent);
+}
+
+.progress-file.file-state-downloading {
+  border-color: rgba(79, 140, 255, 0.5);
+}
+
+.progress-file-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.progress-file-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 75%;
+}
+
+.progress-file-speed {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+  white-space: nowrap;
+}
+
+.progress-file.file-state-done .progress-file-speed {
+  color: #10b981;
+}
+
+.progress-file.file-state-error .progress-file-speed {
+  color: #ef4444;
+}
+
+.progress-file-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.progress-file-state {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.progress-file.file-state-downloading .progress-file-state {
+  color: var(--accent);
+}
+
+.progress-file.file-state-done .progress-file-state {
+  color: #10b981;
+}
+
+.progress-file.file-state-error .progress-file-state {
+  color: #ef4444;
+}
+
+.progress-file-bytes {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+  white-space: nowrap;
+}
+
+.progress-file-bar {
+  height: 4px;
+  background: var(--bg-hover);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-file-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #7e5bff);
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+
+.progress-file.file-state-done .progress-file-fill {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.progress-file.file-state-error .progress-file-fill {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+.progress-file-more {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 8px;
+  font-style: italic;
+}
+
+/* ===========================================================
+ *  下载管理页面 - 时间线风格（完全重写）
+ * =========================================================== */
+
+/* 通用容器 */
+.download-manager {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: dlMgrSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 独立页面版本的下载管理容器 */
+.download-manager-full {
+  width: 100%;
+  height: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 36px 48px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  animation: dlMgrSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+@keyframes dlMgrSlideIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 顶部标题栏 */
+.download-manager-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 0 4px 24px 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+
+.download-manager-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.download-manager-title::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, var(--accent, #5b8def), #8b5cf6);
+  display: inline-block;
+  box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.12);
+}
+
+.download-manager-meta {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0;
+  background: transparent;
+  border: none;
+  text-align: left;
+  letter-spacing: 0.2px;
+}
+
+.download-manager-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.download-manager-action:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.download-manager-action:active {
+  transform: scale(0.98);
+}
+
+.download-manager-action .svg-icon-small {
+  width: 14px;
+  height: 14px;
+}
+
+/* 下载卡片容器 */
+.download-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.download-cards-container::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  bottom: 28px;
+  left: 24px;
+  width: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  z-index: 0;
+}
+
+/* 空状态 */
+.download-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 40px;
+  color: var(--text-secondary);
+  text-align: left;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  position: relative;
+  gap: 12px;
+}
+
+.download-empty-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  margin: 0 0 4px 0;
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.download-empty-icon .svg-icon-hint {
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+  opacity: 0.8;
+  filter: none;
+}
+
+.download-empty-state h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.download-empty-state p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 420px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== 下载卡片（时间线节点样式） ===== */
+.download-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: none;
+  position: relative;
+  margin-left: 56px;
+  margin-bottom: 16px;
+}
+
+.download-card::before {
+  content: '';
+  position: absolute;
+  left: -40px;
+  top: 24px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  z-index: 1;
+  transition: all 0.2s ease;
+}
+
+.download-card::after {
+  content: '';
+  position: absolute;
+  left: -32px;
+  top: 30px;
+  width: 2px;
+  height: 2px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.download-card:hover {
+  border-color: var(--text-secondary);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transform: translateY(-1px);
+}
+
+.download-card:hover::before {
+  border-color: var(--text-primary);
+  transform: scale(1.1);
+}
+
+/* 状态区分：时间线节点颜色 */
+.download-card.status-downloading {
+  border-color: rgba(91, 141, 239, 0.35);
+  background: linear-gradient(180deg, rgba(91, 141, 239, 0.035), transparent 30%);
+}
+
+.download-card.status-downloading::before {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18),
+              0 0 0 8px rgba(91, 141, 239, 0.08);
+  animation: nodePulse 1.8s ease-in-out infinite;
+}
+
+.download-card.status-downloading::after {
+  background: #fff;
+  width: 4px;
+  height: 4px;
+  left: -31px;
+  top: 29px;
+}
+
+@keyframes nodePulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.18), 0 0 0 8px rgba(91, 141, 239, 0.08); }
+  50% { box-shadow: 0 0 0 6px rgba(91, 141, 239, 0.22), 0 0 0 12px rgba(91, 141, 239, 0.06); }
+}
+
+.download-card.status-completed {
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.download-card.status-completed::before {
+  border-color: var(--success);
+  background: var(--success);
+}
+
+.download-card.status-completed::after {
+  background: #fff;
+  width: 4px;
+  height: 4px;
+  left: -31px;
+  top: 29px;
+}
+
+.download-card.status-error {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: linear-gradient(180deg, rgba(239, 68, 68, 0.035), transparent 30%);
+}
+
+.download-card.status-error::before {
+  border-color: var(--error);
+  background: var(--error);
+}
+
+.download-card.status-error::after {
+  background: #fff;
+  width: 4px;
+  height: 4px;
+  left: -31px;
+  top: 29px;
+}
+
+.download-card.status-cancelled {
+  opacity: 0.7;
+}
+
+.download-card.status-cancelled::before {
+  border-color: var(--text-muted);
+  background: var(--bg-card);
+}
+
+.download-card.status-cancelled::after {
+  display: none;
+}
+
+/* 卡片头部（单行紧凑） */
+.download-card-header {
+  display: grid;
+  grid-template-columns: 40px 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s ease;
+  position: relative;
+}
+
+.download-card-header:hover {
+  background: var(--bg-hover);
+}
+
+/* 草方块图标（简化为更小的圆角方块） */
+.download-card-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: none;
+  position: relative;
+}
+
+.download-card-icon svg,
+.download-card-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  shape-rendering: auto;
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+/* 卡片标题区域 */
+.download-card-title-section {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.download-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.download-card-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* 状态徽章（小型胶囊） */
+.download-card-status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  border: 1px solid transparent;
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+}
+
+.download-card.status-downloading .download-card-status {
+  background: rgba(91, 141, 239, 0.1);
+  color: var(--accent);
+  border-color: rgba(91, 141, 239, 0.25);
+}
+
+.download-card.status-completed .download-card-status {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+  border-color: rgba(16, 185, 129, 0.22);
+}
+
+.download-card.status-error .download-card-status {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.download-card.status-cancelled .download-card-status {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--text-muted);
+  border-color: rgba(148, 163, 184, 0.25);
+}
+
+/* 主进度条区域（窄线条） */
+.download-card-main-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.download-card-main-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  min-width: 180px;
+}
+
+.download-card-main-bar {
+  width: 180px;
+  height: 4px;
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: none;
+  position: relative;
+}
+
+.download-card-main-bar-fill {
+  height: 100%;
+  background: var(--accent, #5b8def);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.download-card.status-completed .download-card-main-bar-fill {
+  background: var(--success);
+}
+
+.download-card.status-error .download-card-main-bar-fill {
+  background: var(--error);
+}
+
+.download-card-main-percent {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  min-width: 38px;
+  text-align: right;
+  letter-spacing: 0;
+}
+
+.download-card.status-downloading .download-card-main-percent {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.download-card.status-completed .download-card-main-percent {
+  color: var(--success);
+  font-weight: 700;
+}
+
+.download-card.status-error .download-card-main-percent {
+  color: var(--error);
+  font-weight: 700;
+}
+
+/* 展开箭头（简化为 chevron，非悬停时隐藏渐隐） */
+.download-card-expand-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  transition: transform 0.25s ease, color 0.2s ease, opacity 0.2s ease;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.download-card:hover .download-card-expand-icon {
+  opacity: 1;
+  color: var(--text-primary);
+}
+
+.download-card.expanded .download-card-expand-icon {
+  transform: rotate(180deg);
+  color: var(--text-primary);
+  opacity: 1;
+}
+
+/* 展开内容区域 */
+.download-card-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease, opacity 0.3s ease;
+  padding: 0 20px;
+  opacity: 0;
+}
+
+.download-card.expanded .download-card-body {
+  max-height: 700px;
+  padding: 12px 20px 20px 74px;
+  opacity: 1;
+}
+
+/* 速度和剩余时间信息区 */
+.download-card-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.download-card-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.download-card-meta-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.download-card-meta-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.download-card-speed {
+  color: var(--accent);
+}
+
+/* 卡片底部操作区（极简按钮） */
+.download-card-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 14px;
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.download-card-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.download-card-action-btn:hover {
+  background: var(--error);
+  border-color: var(--error);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
+}
+
+.download-card-action-btn:active {
+  transform: translateY(0);
+}
+
+.download-card-action-btn.danger:hover {
+  background: var(--error);
+  border-color: var(--error);
+  color: #fff;
+}
+
+.download-card-action-btn .svg-icon-small {
+  width: 12px;
+  height: 12px;
+}
+
+/* 旧右下角浮动按钮（已弃用，改为顶部导航栏按钮） */
+.floating-download-btn { display: none !important; }
+
+/* 顶部导航栏下载管理按钮（与时间线风格保持一致） */
+.header-download-btn {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+  flex-shrink: 0;
+  padding: 0;
+  box-shadow: none;
+  position: relative;
+  overflow: visible;
+}
+
+.header-download-btn::before {
+  display: none;
+}
+
+.header-download-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+  background: rgba(91, 141, 239, 0.06);
+  box-shadow: 0 2px 8px rgba(91, 141, 239, 0.15);
+}
+
+.header-download-btn:active {
+  transform: translateY(0);
+}
+
+.header-download-btn .header-download-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.header-download-btn .svg-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  color: inherit;
+  transition: transform 0.15s ease;
+  filter: none;
+}
+
+.header-download-btn:hover .svg-icon {
+  transform: none;
+}
+
+.download-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--error);
+  border-radius: 9px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-secondary);
+  box-shadow: 0 1px 3px rgba(239, 68, 68, 0.3);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  animation: none;
+  z-index: 2;
+}
+
+.download-badge.hidden {
+  display: none;
+}
+
+/* 响应式调整（与时间线风格保持一致） */
+@media (max-width: 900px) {
+  .download-manager-full {
+    padding: 20px 16px;
+  }
+
+  .download-manager-header {
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    padding-bottom: 18px;
+  }
+
+  .download-manager-meta {
+    grid-column: 2;
+    font-size: 12px;
+  }
+
+  .download-manager-title {
+    font-size: 18px;
+  }
+
+  .download-manager-title::before {
+    width: 8px;
+    height: 8px;
+    box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.12);
+  }
+
+  /* 时间线：窄屏幕下节点距离缩短 */
+  .download-card {
+    margin-left: 42px;
+    margin-bottom: 12px;
+  }
+
+  .download-card::before {
+    left: -30px;
+    top: 18px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .download-card::after {
+    left: -22px;
+    top: 23px;
+    width: 2px;
+    height: 2px;
+  }
+
+  .download-card.status-downloading::after,
+  .download-card.status-completed::after,
+  .download-card.status-error::after {
+    width: 3px;
+    height: 3px;
+    left: -23px;
+    top: 22px;
+  }
+
+  .download-cards-container::before {
+    left: 18px;
+    top: 22px;
+    bottom: 22px;
+  }
+
+  .download-card-header {
+    gap: 10px;
+    padding: 14px 14px;
+    grid-template-columns: 32px 1fr auto auto;
+  }
+
+  .download-card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+  }
+
+  .download-card-icon img,
+  .download-card-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .download-card-title {
+    font-size: 13px;
+  }
+
+  .download-card-subtitle {
+    font-size: 11px;
+  }
+
+  .download-card-main-bar {
+    width: 120px;
+    height: 3px;
+  }
+
+  .download-card-main-bar-wrapper {
+    min-width: 120px;
+    gap: 3px;
+  }
+
+  .download-card-main-percent {
+    font-size: 11px;
+  }
+
+  .download-card-status {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .download-card.expanded .download-card-body {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* 响应式：meta 信息区 */
+  .download-card-meta {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .download-card-meta-label {
+    font-size: 10px;
+    letter-spacing: 0.6px;
+  }
+
+  .download-card-meta-value {
+    font-size: 12px;
+  }
+
+  .download-card-action-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .download-card-action-btn .svg-icon-small {
+    width: 10px;
+    height: 10px;
+  }
+
+  .download-empty-state {
+    padding: 32px 24px;
+    gap: 8px;
+  }
+
+  .download-empty-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 4px;
+  }
+
+  .download-empty-icon .svg-icon-hint {
+    width: 18px;
+    height: 18px;
+  }
+
+  .download-empty-state h3 {
+    font-size: 15px;
+  }
+
+  .download-empty-state p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 600px) {
+  .download-card-header {
+    grid-template-columns: 32px 1fr auto;
+  }
+
+  .download-card-main-progress {
+    grid-column: 1 / -1;
+    width: 100%;
+    order: 3;
+    justify-content: space-between;
+    padding-top: 2px;
+  }
+
+  .download-card-main-bar-wrapper {
+    min-width: 0;
+    flex: 1;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .download-card-main-bar {
+    width: 100%;
+  }
+
+  .download-card-expand-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* ===========================================================
+ * 下载页增强样式 - 玻璃态 / 动画 / 发光边框
+ * =========================================================== */
+
+/* 下载页 Tabs - 玻璃态 + 平滑过渡 */
+.download-subtabs {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid rgba(127, 127, 127, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  transition: background 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+[data-theme="dark"] .download-subtabs {
+  background: rgba(30, 30, 40, 0.45);
+  border-color: rgba(127, 127, 127, 0.25);
+}
+
+/* 子 Tab 按钮 - hover 上浮与阴影，active 发光脉冲 */
+.subtab-btn {
+  flex: 1;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.25s ease,
+              background 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.subtab-btn:hover {
+  transform: translateY(-2px);
+  color: var(--text-primary);
+  background: rgba(127, 127, 127, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.subtab-btn.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent, #4f8cff), #7e5bff);
+  box-shadow: 0 4px 18px rgba(79, 140, 255, 0.35),
+              0 0 0 1px rgba(79, 140, 255, 0.25);
+  animation: subtabGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes subtabGlow {
+  0%, 100% {
+    box-shadow: 0 4px 18px rgba(79, 140, 255, 0.35),
+                0 0 0 1px rgba(79, 140, 255, 0.25);
+  }
+  50% {
+    box-shadow: 0 4px 28px rgba(79, 140, 255, 0.55),
+                0 0 0 1px rgba(126, 91, 255, 0.4);
+  }
+}
+
+/* 版本详情卡片入场动画 (scale + fade) */
+.download-detail {
+  animation: downloadDetailIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+
+@keyframes downloadDetailIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 草方块 SVG 呼吸 + hover 放大旋转 */
+.mc-block-svg {
+  display: inline-block;
+  animation: mcBlockBreathe 3.2s ease-in-out infinite;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.4s ease;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15));
+  transform-origin: center;
+}
+
+.mc-block-svg:hover {
+  transform: scale(1.12) rotate(-8deg);
+  filter: drop-shadow(0 6px 14px rgba(79, 140, 255, 0.35));
+}
+
+@keyframes mcBlockBreathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50%      { transform: scale(1.03) translateY(-2px); }
+}
+
+/* 版本筛选按钮 - 弹跳 hover 效果 */
+.version-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              color 0.25s ease,
+              border-color 0.25s ease,
+              background 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.version-filter-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  color: var(--text-primary);
+  border-color: rgba(79, 140, 255, 0.4);
+  box-shadow: 0 6px 18px rgba(79, 140, 255, 0.22);
+}
+
+.version-filter-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.version-filter-btn.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent, #4f8cff), #7e5bff);
+  border-color: transparent;
+  box-shadow: 0 4px 18px rgba(79, 140, 255, 0.4);
+}
+
+/* Loader 分类卡片 - hover 上浮 + 阴影增强 */
+.loader-category {
+  position: relative;
+}
+
+.loader-category:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: rgba(79, 140, 255, 0.35);
+}
+
+.loader-category.selected {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(79, 140, 255, 0.18),
+              0 0 0 1px rgba(79, 140, 255, 0.2);
+}
+
+/* Loader 版本项 - 交错入场动画 */
+.loader-version-item {
+  opacity: 0;
+  animation: loaderItemIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes loaderItemIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-6px) translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+.loader-version-item:hover {
+  background: linear-gradient(120deg,
+    rgba(79, 140, 255, 0.08),
+    transparent);
+  transform: translateX(2px);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+/* 下载进度环 */
+.download-progress-ring {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.download-progress-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.download-progress-ring .download-ring-track {
+  fill: none;
+  stroke: rgba(127, 127, 127, 0.18);
+  stroke-width: 5;
+}
+
+.download-progress-ring .download-ring-progress {
+  fill: none;
+  stroke: url(#downloadRingGradient);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 150.8;
+  stroke-dashoffset: 150.8;
+  transition: stroke-dashoffset 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 0 5px rgba(79, 140, 255, 0.4));
+}
+
+.download-progress-ring.done .download-ring-progress {
+  stroke: #10b981;
+  filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.45));
+}
+
+.download-progress-ring.error .download-ring-progress {
+  stroke: #ef4444;
+  filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.45));
+}
+
+.download-progress-ring .download-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* 版本列表项 hover 发光边框 */
+.version-list .version-item {
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease,
+              background 0.3s ease;
+}
+
+.version-list .version-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(79, 140, 255, 0.5);
+  box-shadow: 0 0 0 2px rgba(79, 140, 255, 0.12),
+              0 8px 22px rgba(79, 140, 255, 0.18);
+  background: linear-gradient(135deg,
+    rgba(79, 140, 255, 0.06),
+    rgba(126, 91, 255, 0.04));
+}
+
+/* view leaving / entering 动画 */
+.view.view-leaving {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.25s ease,
+              transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.view.view-entering {
+  animation: viewEnterIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes viewEnterIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 按钮 pressed 微交互 */
+.btn-primary.is-pressed,
+.btn-launch.is-pressed {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* 赞助按钮 wobble hover */
+.sponsor-btn:hover {
+  animation: sponsorWobble 0.9s ease-in-out;
+}
+
+@keyframes sponsorWobble {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-2.5deg); }
+  50%      { transform: rotate(2.5deg); }
+  75%      { transform: rotate(-1.5deg); }
+}
+
+/* 交错入场 - 通用 */
+.animate-slide-up {
+  animation: animateSlideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes animateSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 水波纹 ripple */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  transform: scale(0);
+  animation: rippleExpand 0.6s ease-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btn-primary .ripple,
+.subtab-btn.active .ripple,
+.login-tab.active .ripple {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+@keyframes rippleExpand {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* toast 离开动画 */
+.toast.toast-leaving {
+  animation: toastSlideOut 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes toastSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+}
+
+/* 呼吸动画 - 通用 */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.02); }
+}
+
+/* fadeInUp - 通用 */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================================================
+ * 加载器图片图标样式
+ * =========================================================== */
+
+.option-icon .loader-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.loader-category:hover .loader-img {
+  transform: scale(1.15);
+}
+
+.loader-category.selected .loader-img {
+  transform: scale(1.1);
+}
+
+.loader-category.disabled .loader-img {
+  filter: grayscale(0.6);
+  opacity: 0.75;
+}
+
+/* option-item 容器中的加载器图标（初次检测阶段） */
+.option-item .loader-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.option-item:hover .loader-img {
+  transform: scale(1.15);
+}
+
+.option-item.disabled .loader-img {
+  filter: grayscale(0.6);
+  opacity: 0.75;
+}
+
+/* 大型版本图标样式 */
+.big-block-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+/* 空态版本图标 */
+.version-block-img {
+  width: 48px;
+  height: 48px;
+}
+
+/* 版本选择器中图标的 hover 效果 */
+.version-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.version-item-icon .loader-img {
+  width: 32px;
+  height: 32px;
+}

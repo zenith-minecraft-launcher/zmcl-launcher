@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zenith - Minecraft 启动器</title>
+  <link rel="icon" href="assets/logo.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="assets/logo.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/launch.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/download.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/taowa.css">
+    <link rel="stylesheet" href="css/toolbox.css">
+    <link rel="stylesheet" href="css/mods.css">
+</head>
+<body>
+  <!-- 启动动画 Splash Screen -->
+  <div class="splash" id="splash">
+    <div class="splash-content">
+      <div class="splash-logo">
+        <img src="assets/logo.png" class="splash-logo-svg" alt="Zenith">
+      </div>
+      <div class="splash-title">Zenith</div>
+      <div class="splash-sub">Launcher</div>
+      <!-- 圆环式进度条 -->
+      <div class="splash-ring">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="splash-ring-svg">
+          <circle cx="60" cy="60" r="52"
+                  fill="none" stroke="#e8ecf1" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="60" cy="60" r="52"
+                  fill="none" stroke="url(#splashRingGrad)" stroke-width="6"
+                  stroke-linecap="round"
+                  transform="rotate(-90 60 60)"
+                  class="splash-ring-progress"/>
+          <defs>
+            <linearGradient id="splashRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4f8cff"/>
+              <stop offset="100%" stop-color="#7e5bff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="splash-ring-text">
+          <span class="splash-ring-percent" id="splashPercent">0%</span>
+          <span class="splash-ring-label">Loading</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="app" class="app splash-hidden">
+
+    <!-- 自定义标题栏 -->
+  <div class="title-bar">
+    <div class="title-bar-drag">
+      <div class="title-bar-logo">
+        <img src="assets/logo.png" class="svg-icon" alt="Zenith">
+      </div>
+      <span class="title-bar-text">Zenith · Minecraft 启动器</span>
+    </div>
+      <div class="title-bar-controls">
+        <button class="title-bar-btn" id="minBtn" title="最小化">
+          <span data-icon="minimize"></span>
+        </button>
+        <button class="title-bar-btn" id="maxBtn" title="最大化">
+          <span data-icon="maximize"></span>
+        </button>
+        <button class="title-bar-btn title-bar-close" id="closeBtn" title="关闭">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 顶部导航栏 -->
+    <header class="app-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <img src="assets/logo.png" alt="Zenith">
+        </div>
+        <span class="logo-text">Zenith</span>
+      </div>
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-view="launch">
+          <span class="nav-icon"><span data-icon="rocket"></span></span>
+          <span>启动</span>
+        </button>
+        <button class="nav-tab" data-view="download">
+          <span class="nav-icon"><span data-icon="download"></span></span>
+          <span>下载</span>
+        </button>
+        <button class="nav-tab" data-view="mods">
+          <span class="nav-icon"><span data-icon="puzzle"></span></span>
+          <span>模组</span>
+        </button>
+        <button class="nav-tab" data-view="settings">
+          <span class="nav-icon"><span data-icon="settings"></span></span>
+          <span>设置</span>
+        </button>
+        <button class="nav-tab" data-view="ai">
+          <span class="nav-icon"><span data-icon="sparkle"></span></span>
+          <span>AI 助手</span>
+        </button>
+
+        <!-- 更多：下拉菜单，收纳陶瓦联机/工具箱/赞助者名单 -->
+        <div class="nav-more" id="navMore">
+          <button class="nav-more-trigger" id="navMoreTrigger" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-icon"><span data-icon="more"></span></span>
+            <span>更多</span>
+            <span class="nav-more-caret">▾</span>
+          </button>
+          <div class="nav-more-menu" id="navMoreMenu" role="menu">
+            <button class="nav-more-item" data-view="taowa" role="menuitem">
+              <span class="nav-more-icon"><span data-icon="users"></span></span>
+              <span class="nav-more-text">陶瓦联机</span>
+            </button>
+            <button class="nav-more-item" data-view="toolbox" role="menuitem">
+              <span class="nav-more-icon"><span data-icon="settings"></span></span>
+              <span class="nav-more-text">工具箱</span>
+            </button>
+            <button class="nav-more-item" data-view="sponsors" role="menuitem">
+              <span class="nav-more-icon"><span data-icon="heart"></span></span>
+              <span class="nav-more-text">赞助者名单</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+      <div class="header-right">
+        <button class="header-download-btn" id="headerDownloadBtn" title="下载管理">
+          <span class="header-download-icon"><span data-icon="download"></span></span>
+          <span class="download-badge hidden" id="headerDownloadBadge">0</span>
+        </button>
+        <button class="sponsor-btn" id="sponsorBtn" title="赞助支持项目">
+          <span class="sponsor-btn-icon"><span data-icon="heart"></span></span>
+          <span>赞助</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" title="切换主题">
+          <span class="theme-icon" id="themeIcon"><span data-icon="sun"></span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="app-content">
+
+      <!-- 启动页面 -->
+      <div id="view-launch" class="view active">
+        <div class="launch-layout">
+          <aside class="version-selector">
+          </aside>
+
+          <div class="launch-main">
+            <div class="account-card" id="accountCard">
+              <div class="account-avatar" id="accountAvatar"><span data-icon="user"></span></div>
+              <div class="account-info">
+                <div class="account-name" id="accountName">未登录</div>
+                <div class="account-type" id="accountType">请选择登录方式</div>
+              </div>
+              <button class="btn btn-ghost" id="manageAccountBtn">
+                <span>账号管理</span>
+              </button>
+            </div>
+
+            <div class="version-card" id="versionCard">
+              <div class="version-info">
+                <div class="version-label">当前版本</div>
+                <div class="version-name" id="selectedVersionName">未选择版本</div>
+                <div class="version-type" id="selectedVersionType">请先下载一个版本</div>
+              </div>
+              <div class="launch-buttons">
+                <button class="btn btn-primary btn-launch" id="launchBtn" disabled>
+                  <span class="launch-icon"><span data-icon="playTriangle"></span></span>
+                  <span>启动游戏</span>
+                </button>
+                <button class="btn btn-danger btn-stop" id="stopBtn">
+                  <span class="launch-icon"><span data-icon="stop"></span></span>
+                  <span>取消启动 / 停止游戏</span>
+                </button>
+                <button class="btn btn-secondary" id="downloadVersionBtn">
+                  <span>下载版本</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="log-card">
+              <div class="log-header">
+                <span>运行日志</span>
+                <div class="log-header-actions">
+                  <button class="btn btn-small" id="copyLogBtn">复制</button>
+                  <button class="btn btn-small" id="openLogDirBtn">日志目录</button>
+                  <button class="btn btn-small" id="clearLogBtn">清空</button>
+                </div>
+              </div>
+              <div class="log-content" id="logContent">
+                <div class="log-empty">启动游戏后将在此显示日志</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 陶瓦联机页面 -->
+      <div id="view-taowa" class="view">
+        <div class="taowa-layout">
+
+          <!-- 核心未就绪提示卡（需要下载核心时显示） -->
+          <div class="taowa-core-alert" id="taowaCoreAlert" style="display: none;">
+            <div class="taowa-core-alert-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                <path d="M12 7v6M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+            <div class="taowa-core-alert-body">
+              <div class="taowa-core-alert-title">需要下载核心</div>
+              <div class="taowa-core-alert-desc">首次使用陶瓦联机需要下载 EasyTier 核心，下载完成后即可使用。</div>
+            </div>
+            <button class="btn btn-primary" id="taowaDownloadCoreBtn">下载核心</button>
+          </div>
+
+          <!-- 顶部状态栏 -->
+          <div class="taowa-status-card">
+            <div class="taowa-status-left">
+              <div class="taowa-status-icon" id="taowaStatusIcon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
+                  <g fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                    <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                    <circle cx="9" cy="7" r="4"/>
+                  </g>
+                </svg>
+              </div>
+              <div>
+                <div class="taowa-status-title" id="taowaStatusTitle">未连接</div>
+                <div class="taowa-status-desc" id="taowaStatusDesc">创建房间或输入房间码加入</div>
+              </div>
+            </div>
+            <div class="taowa-status-right" id="taowaNodeInfo">
+              <span class="taowa-node-label">节点：</span>
+              <span class="taowa-node-value" id="taowaNodeName">—</span>
+            </div>
+          </div>
+
+          <!-- 房间码输入区域 -->
+          <div class="taowa-join-card">
+            <div class="taowa-join-header">
+              <span class="taowa-join-title">加入房间</span>
+            </div>
+            <div class="taowa-join-body">
+              <input type="text" id="taowaRoomCode" class="taowa-room-input" placeholder="输入房间码，例如 abcd-1234-ef56-7890" maxlength="19" style="text-transform:uppercase; letter-spacing:1px;" />
+              <button class="btn btn-primary btn-large" id="taowaJoinBtn">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small">
+                  <path d="M10 17l5-5-5-5v10z" fill="currentColor"/>
+                </svg>
+                <span>加入房间</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 操作按钮区：创建房间 与 加入房间 切换 -->
+          <div class="taowa-tabs">
+            <button class="taowa-tab-btn active" data-taowa-tab="create">创建房间</button>
+            <button class="taowa-tab-btn" data-taowa-tab="join">加入房间</button>
+          </div>
+
+          <!-- 创建房间面板 -->
+          <div class="taowa-panel active" data-taowa-panel="create">
+            <div class="taowa-info-card">
+              <h3 class="taowa-info-title">使用步骤</h3>
+              <ol class="taowa-info-list">
+                <li>启动 Minecraft 并进入存档</li>
+                <li>按 Esc 打开菜单，点击「对局域网开放」</li>
+                <li>记下游戏界面的端口号，填入下方</li>
+              </ol>
+            </div>
+
+            <div class="taowa-port-card">
+              <label class="taowa-port-label">游戏端口</label>
+              <input type="number" id="taowaPortInput" class="taowa-port-input" placeholder="25565" min="1024" max="65535" />
+              <small class="taowa-port-hint">Minecraft 默认端口为 25565，局域网开放时会随机生成一个端口</small>
+            </div>
+
+            <button class="btn btn-primary btn-full btn-create-room" id="taowaCreateBtn">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small">
+                <path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+              <span>开始创建房间</span>
+            </button>
+          </div>
+
+          <!-- 加入房间面板 -->
+          <div class="taowa-panel" data-taowa-panel="join">
+            <div class="taowa-info-card">
+              <h3 class="taowa-info-title">加入房间</h3>
+              <ol class="taowa-info-list">
+                <li>向房主索要房间码</li>
+                <li>在下方输入房间码</li>
+                <li>点击「加入房间」，然后在 Minecraft 中点击「多人游戏」即可看到房间</li>
+              </ol>
+            </div>
+
+            <div class="taowa-port-card">
+              <label class="taowa-port-label">房间码</label>
+              <input type="text" id="taowaRoomCodeInput" class="taowa-port-input" placeholder="abcd-1234-ef56-7890" maxlength="19" style="text-transform:uppercase; letter-spacing:1px;" />
+            </div>
+
+            <button class="btn btn-primary btn-full btn-create-room" id="taowaJoinPanelBtn">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small">
+                <path d="M10 17l5-5-5-5v10z" fill="currentColor"/>
+              </svg>
+              <span>加入房间</span>
+            </button>
+          </div>
+
+          <!-- 连接成功后的房间信息卡 -->
+          <div class="taowa-result-card" id="taowaResultCard" style="display:none;">
+            <div class="taowa-result-header">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-hint" style="color: var(--success);">
+                <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.15"/>
+                <path d="M8 12l3 3 5-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+              <div class="taowa-result-title" id="taowaResultTitle">房间已创建</div>
+            </div>
+
+            <div class="taowa-room-code-box">
+              <span class="taowa-room-code-label">房间码</span>
+              <div class="taowa-room-code-row">
+                <span class="taowa-room-code-text" id="taowaResultCode">—</span>
+                <button class="btn btn-ghost btn-small" id="taowaCopyCodeBtn">复制</button>
+              </div>
+            </div>
+
+            <div class="taowa-room-code-box">
+              <span class="taowa-room-code-label">服务器地址</span>
+              <div class="taowa-room-code-row">
+                <span class="taowa-room-code-text" id="taowaResultAddress">—</span>
+                <button class="btn btn-ghost btn-small" id="taowaCopyAddrBtn">复制</button>
+              </div>
+            </div>
+
+            <div class="taowa-room-meta">
+              <div class="taowa-meta-item">
+                <span class="taowa-meta-label">节点</span>
+                <span class="taowa-meta-value" id="taowaResultNode">—</span>
+              </div>
+              <div class="taowa-meta-item">
+                <span class="taowa-meta-label">延迟</span>
+                <span class="taowa-meta-value" id="taowaResultPing">— ms</span>
+              </div>
+              <div class="taowa-meta-item">
+                <span class="taowa-meta-label">端口</span>
+                <span class="taowa-meta-value" id="taowaResultPort">—</span>
+              </div>
+            </div>
+
+            <button class="btn btn-secondary btn-full" id="taowaStopBtn" style="margin-top: 12px;">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small">
+                <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/>
+              </svg>
+              <span>断开连接</span>
+            </button>
+          </div>
+
+          <!-- 节点列表信息 -->
+          <div class="taowa-nodes-card">
+            <h3 class="taowa-info-title">陶瓦社区节点</h3>
+            <div class="taowa-nodes-list" id="taowaNodesList">
+              <!-- 由 JS 动态填充 -->
+            </div>
+            <small class="taowa-port-hint" style="display:block; margin-top: 12px;">陶瓦联机基于 EasyTier 协议，通过社区节点进行 P2P 打洞或中继</small>
+          </div>
+
+          <!-- 核心管理（下载 / 卸载） -->
+          <div class="taowa-port-card">
+            <div class="taowa-port-label" style="margin-bottom: 8px;">
+              核心管理
+            </div>
+            <div id="taowaCoreInfo" class="taowa-port-hint" style="margin-bottom: 12px;">正在检查本地核心…</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <button class="btn btn-danger" id="taowaUninstallBtn">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M3 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 6l1 14a2 2 0 002 2h6a2 2 0 002-2l1-14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>卸载核心</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 工具箱页面 -->
+      <div id="view-toolbox" class="view">
+        <div class="toolbox-layout">
+
+          <!-- 页面标题卡片 -->
+          <div class="toolbox-header">
+            <div class="toolbox-header-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
+                <rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M12 12v4M9 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="toolbox-header-content">
+              <h1>工具箱</h1>
+              <p>常用的启动器 / 系统辅助工具：打开游戏目录、备份存档、清理缓存、网络诊断等。</p>
+            </div>
+          </div>
+
+          <!-- 分类 Tab -->
+          <div id="toolboxTabs" class="toolbox-tabs"></div>
+
+          <!-- 工具网格 -->
+          <div id="toolboxGrid" class="toolbox-grid"></div>
+
+        </div>
+      </div>
+
+      <!-- 下载页面 - 左列表 + 右详情/占位 -->
+      <div id="view-download" class="view">
+        <div class="download-subtabs">
+          <button class="subtab-btn active" data-subtab="versions">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M4 4h16v4H4V4zm0 8h10v4H4v-4zm0 6h16v4H4v-4zm12-6h4v4h-4v-4z" fill="currentColor"/></svg>
+            <span>游戏版本</span>
+          </button>
+          <button class="subtab-btn" data-subtab="mods">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" fill="currentColor"/></svg>
+            <span>模组</span>
+          </button>
+          <button class="subtab-btn" data-subtab="resourcepacks">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>
+            <span>资源包</span>
+          </button>
+          <button class="subtab-btn" data-subtab="shaderpacks">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-14a6 6 0 100 12 6 6 0 000-12z" fill="currentColor"/></svg>
+            <span>光影</span>
+          </button>
+          <button class="subtab-btn" data-subtab="datapacks">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" fill="currentColor"/></svg>
+            <span>数据包</span>
+          </button>
+          <button class="subtab-btn" data-subtab="worlds">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 2a8 8 0 110 16 8 8 0 010-16zm-1 3v6l5 3 .8-1.4-4.3-2.6V7h-1.5z" fill="currentColor"/></svg>
+            <span>世界/整合包</span>
+          </button>
+        </div>
+
+        <!-- 游戏版本下载 -->
+        <div class="download-subtab-pane active" data-subtab-pane="versions">
+          <div class="download-layout">
+            <aside class="download-sidebar">
+              <div class="sidebar-header">
+                <h3>可下载版本</h3>
+                <!-- 版本类型筛选器 -->
+                <div class="version-filter-tabs" id="versionFilterTabs">
+                  <button class="version-filter-btn active" data-filter="all" title="显示所有版本">
+                    <span>全部</span>
+                  </button>
+                  <button class="version-filter-btn" data-filter="release" title="正式版">
+                    <span>正式版</span>
+                  </button>
+                  <button class="version-filter-btn" data-filter="snapshot" title="快照版">
+                    <span>快照版</span>
+                  </button>
+                  <button class="version-filter-btn" data-filter="old" title="远古版本 (Alpha/Beta)">
+                    <span>远古版本</span>
+                  </button>
+                  <button class="version-filter-btn" data-filter="aprilfools" title="愚人节版本">
+                    <span>愚人节版本</span>
+                  </button>
+                </div>
+              </div>
+              <div class="version-list" id="versionList">
+                <div class="loading-spinner">加载中...</div>
+              </div>
+            </aside>
+
+            <div class="download-main">
+
+            <!-- 下载进行中 - 显示进度（隐藏，仅在老流程中备用） -->
+            <div class="download-progress" id="downloadProgress" style="display:none;">
+              <div class="progress-header">
+                <span id="progressStage">准备中...</span>
+                <span id="progressPercent">0%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="progress-info" id="progressInfo"></div>
+              <div class="progress-files" id="progressFiles"></div>
+              <div class="progress-actions">
+                <button class="btn btn-secondary btn-small" id="cancelDownloadBtn">取消下载</button>
+              </div>
+            </div>
+
+            <!-- 未选择版本 - 占位页 -->
+            <div class="download-hint" id="downloadHint">
+              <div class="hint-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-hint">
+                  <path d="M12 2a1 1 0 011 1v11.59l3.3-3.3a1 1 0 011.4 1.42l-5 5a1 1 0 01-1.4 0l-5-5a1 1 0 011.4-1.42L11 14.6V3a1 1 0 011-1zM4 19a1 1 0 011-1h14a1 1 0 010 2H5a1 1 0 01-1-1z" fill="currentColor"/>
+                </svg>
+              </div>
+              <h3>选择左侧列表中的版本开始下载</h3>
+              <p>支持官方版、快照版、Fabric 等版本。下载中请切换到「下载管理」查看进度。</p>
+              <button class="btn btn-secondary" id="goToDownloadMgrBtn" style="margin-top:18px;">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>前往下载管理</span>
+              </button>
+            </div>
+
+            <!-- 版本详情页 - 默认隐藏 -->
+            <div class="download-detail" id="downloadDetail" style="display:none;">
+
+              <!-- 顶部头部 -->
+              <div class="detail-header">
+                <button class="detail-back" id="detailBackBtn">
+                  <span data-icon="arrowRight"></span>
+                </button>
+                <div class="detail-header-main">
+                  <div class="detail-icon-wrap">
+                    <img src="assets/origin.png" class="loader-img big-block-img" alt="版本" />
+                  </div>
+                  <div class="detail-header-info">
+                    <h1 id="detailVersionName">26.1.2</h1>
+                    <span class="detail-type-label" id="detailVersionType">正式版</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 内容区域 -->
+              <div class="detail-body">
+
+                <!-- 下载源 -->
+                <div class="detail-section">
+                  <h4 class="detail-section-title">下载源</h4>
+                  <div class="source-list" id="sourceList">
+                    <!-- 由 JS 动态填充 -->
+                  </div>
+                </div>
+
+                <!-- 模组加载器 -->
+                <div class="detail-section">
+                  <h4 class="detail-section-title">模组加载器</h4>
+                  <div class="loader-list" id="loaderList">
+                    <!-- 由 JS 动态填充 -->
+                  </div>
+                  <div class="loader-conflict-box" id="loaderConflictBox" style="display:none;"></div>
+                </div>
+
+              </div>
+
+              <!-- 底部操作栏 -->
+              <div class="detail-footer">
+                <button class="btn btn-secondary btn-ghost" id="detailCancelBtn">取消</button>
+                <button class="btn btn-primary btn-large" id="detailConfirmBtn" disabled>
+                  <span>确认下载</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+          </div>
+        </div>
+
+        <!-- 模组搜索 -->
+        <div class="download-subtab-pane" data-subtab-pane="mods">
+          <div class="addon-layout" data-addon-type="mod">
+            <div class="addon-search-bar">
+              <input type="text" class="addon-search-input" placeholder="搜索模组 (Mod) — 建议仅使用英文搜索" />
+              <select class="addon-source-filter">
+                <option value="modrinth">Modrinth</option>
+                <option value="curseforge">CurseForge</option>
+                <option value="all">全部源</option>
+              </select>
+              <select class="addon-version-filter"><option value="">全部 MC 版本</option></select>
+              <select class="addon-loader-filter">
+                <option value="">全部加载器</option>
+                <option value="fabric">Fabric</option>
+                <option value="quilt">Quilt</option>
+              </select>
+              <button class="btn btn-primary btn-search-addon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14z" fill="currentColor"/></svg>
+                <span>搜索</span>
+              </button>
+            </div>
+            <div class="addon-content-area">
+              <div class="addon-results" data-addon-type="mod">
+                <div class="loading-spinner">点击搜索开始查找模组</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 资源包搜索 -->
+        <div class="download-subtab-pane" data-subtab-pane="resourcepacks">
+          <div class="addon-layout" data-addon-type="resourcepack">
+            <div class="addon-search-bar">
+              <input type="text" class="addon-search-input" placeholder="搜索资源包 (Resource Pack) — 建议仅使用英文搜索" />
+              <select class="addon-source-filter">
+                <option value="modrinth">Modrinth</option>
+                <option value="curseforge">CurseForge</option>
+                <option value="all">全部源</option>
+              </select>
+              <select class="addon-version-filter"><option value="">全部 MC 版本</option></select>
+              <button class="btn btn-primary btn-search-addon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14z" fill="currentColor"/></svg>
+                <span>搜索</span>
+              </button>
+            </div>
+            <div class="addon-content-area">
+              <div class="addon-results" data-addon-type="resourcepack">
+                <div class="loading-spinner">点击搜索开始查找资源包</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 光影搜索 -->
+        <div class="download-subtab-pane" data-subtab-pane="shaderpacks">
+          <div class="addon-layout" data-addon-type="shader">
+            <div class="addon-search-bar">
+              <input type="text" class="addon-search-input" placeholder="搜索光影 (Shader) — 建议仅使用英文搜索" />
+              <select class="addon-source-filter">
+                <option value="modrinth">Modrinth</option>
+                <option value="curseforge">CurseForge</option>
+                <option value="all">全部源</option>
+              </select>
+              <select class="addon-version-filter"><option value="">全部 MC 版本</option></select>
+              <button class="btn btn-primary btn-search-addon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14z" fill="currentColor"/></svg>
+                <span>搜索</span>
+              </button>
+            </div>
+            <div class="addon-content-area">
+              <div class="addon-results" data-addon-type="shader">
+                <div class="loading-spinner">点击搜索开始查找光影</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 数据包搜索 -->
+        <div class="download-subtab-pane" data-subtab-pane="datapacks">
+          <div class="addon-layout" data-addon-type="datapack">
+            <div class="addon-search-bar">
+              <input type="text" class="addon-search-input" placeholder="搜索数据包 (Data Pack) — 建议仅使用英文搜索" />
+              <select class="addon-source-filter">
+                <option value="modrinth">Modrinth</option>
+                <option value="curseforge">CurseForge</option>
+                <option value="all">全部源</option>
+              </select>
+              <select class="addon-version-filter"><option value="">全部 MC 版本</option></select>
+              <button class="btn btn-primary btn-search-addon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14z" fill="currentColor"/></svg>
+                <span>搜索</span>
+              </button>
+            </div>
+            <div class="addon-content-area">
+              <div class="addon-results" data-addon-type="datapack">
+                <div class="loading-spinner">点击搜索开始查找数据包</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 世界/整合包搜索 -->
+        <div class="download-subtab-pane" data-subtab-pane="worlds">
+          <div class="addon-layout" data-addon-type="modpack">
+            <div class="addon-search-bar">
+              <input type="text" class="addon-search-input" placeholder="搜索世界/整合包 (World/Modpack) — 建议仅使用英文搜索" />
+              <select class="addon-source-filter">
+                <option value="modrinth">Modrinth</option>
+                <option value="curseforge">CurseForge</option>
+                <option value="all">全部源</option>
+              </select>
+              <select class="addon-version-filter"><option value="">全部 MC 版本</option></select>
+              <button class="btn btn-primary btn-search-addon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14z" fill="currentColor"/></svg>
+                <span>搜索</span>
+              </button>
+            </div>
+            <div class="addon-content-area">
+              <div class="addon-results" data-addon-type="modpack">
+                <div class="loading-spinner">点击搜索开始查找世界/整合包</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Addon 详情弹窗 -->
+        <div id="addonDetailModal" class="modal hidden" aria-hidden="true">
+          <div class="modal-overlay" data-close-modal="addonDetailModal"></div>
+          <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+              <div class="addon-detail-header">
+                <div class="addon-detail-icon" id="addonDetailIcon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-hint"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" fill="currentColor"/></svg>
+                </div>
+                <div>
+                  <h2 id="addonDetailTitle">项目</h2>
+                  <div class="addon-detail-meta">
+                    <span id="addonDetailAuthor">作者</span>
+                    <span>·</span>
+                    <span id="addonDetailDownloads">0 次下载</span>
+                  </div>
+                </div>
+              </div>
+              <button class="modal-close" data-close-modal="addonDetailModal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="addon-detail-description" id="addonDetailDescription">加载中...</div>
+              <div class="detail-section" id="addonDependenciesSection" style="margin-top:20px; display:none;">
+                <h4 class="detail-section-title">前置/依赖模组</h4>
+                <div id="addonDependenciesList" class="addon-dependencies-list">
+                  <div class="loading-spinner">检查依赖中...</div>
+                </div>
+              </div>
+              <!-- 版本筛选器 -->
+              <div class="detail-section" id="addonVersionFilterSection" style="margin-top:20px;">
+                <h4 class="detail-section-title">版本筛选</h4>
+                <div class="addon-filters-row">
+                  <select class="addon-filter-select" id="addonFilterVersion">
+                    <option value="">全部 MC 版本</option>
+                  </select>
+                  <select class="addon-filter-select" id="addonFilterLoader">
+                    <option value="">全部加载器</option>
+                    <option value="fabric">Fabric</option>
+                    <option value="quilt">Quilt</option>
+                  </select>
+                  <button class="btn btn-small btn-secondary" id="addonFilterReset">重置筛选</button>
+                </div>
+              </div>
+
+              <div class="detail-section" style="margin-top:20px;">
+                <h4 class="detail-section-title">可下载的版本</h4>
+                <div class="addon-versions-list" id="addonVersionsList">
+                  <div class="loading-spinner">加载版本列表中...</div>
+                </div>
+              </div>
+              <div class="detail-section" style="margin-top:18px;">
+                <div class="addon-external-links" id="addonExternalLinks"></div>
+              </div>
+              <div class="addon-download-progress" id="addonDownloadProgress" style="display:none;">
+                <div class="progress-header">
+                  <span id="addonProgressStage">下载中...</span>
+                  <span id="addonProgressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" id="addonProgressFill"></div>
+                </div>
+                <div class="progress-info" id="addonProgressInfo"></div>
+                <div class="progress-actions">
+                  <button class="btn btn-secondary btn-small" id="cancelAddonDownloadBtn">取消下载</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 下载管理页面（独立页面） ===== -->
+      <div id="view-downloads" class="view">
+        <div class="download-manager-full">
+          <div class="download-manager-header">
+            <h2 class="download-manager-title">下载管理</h2>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="download-manager-meta" id="downloadManagerMeta" style="color: var(--text-secondary); font-size:13px;">0 个任务</span>
+              <button class="download-manager-action" id="clearCompletedBtn">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small">
+                  <path d="M6 7h12l-1 13H7L6 7zm3-4h6l1 3H8l1-3z" fill="currentColor"/>
+                </svg>
+                <span>清空已完成</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 下载卡片容器（由 JS 动态填充） -->
+          <div class="download-cards-container" id="downloadCardsContainer">
+            <!-- 空状态 -->
+            <div class="download-empty-state" id="downloadEmptyState">
+              <div class="download-empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-hint">
+                  <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+              </div>
+              <h3>暂无下载任务</h3>
+              <p>前往「下载」页面选择版本，下载进度将在此显示</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 设置页面 -->
+      <div id="view-settings" class="view">
+        <div class="settings-layout">
+        </div>
+      </div>
+
+      <!-- AI 助手页面 -->
+      <div id="view-ai" class="view">
+        <div class="ai-layout">
+          <div class="ai-sidebar">
+            <div class="ai-sidebar-header">
+              <div class="ai-brand">
+                <span class="ai-brand-icon"><span data-icon="sparkle"></span></span>
+                <div class="ai-brand-text">
+                  <div class="ai-brand-title">Zenith AI 助手</div>
+                  <div class="ai-brand-sub" id="aiCurrentModelInfo">使用 DeepSeek Flash</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ai-sidebar-section">
+              <div class="ai-sidebar-section-title">激活状态</div>
+              <div class="ai-activation-card" id="aiActivationCard">
+                <div class="ai-activation-status">
+                  <span class="ai-activation-dot" id="aiActivationDot"></span>
+                  <span id="aiActivationLabel">加载中...</span>
+                </div>
+                <div class="ai-activation-sub" id="aiActivationSub">请先输入激活码或开启自定义模型</div>
+                <div class="ai-activation-actions" id="aiActivationActions">
+                  <button class="btn btn-primary btn-small" id="aiShowActivationBtn">输入激活码</button>
+                  <button class="btn btn-secondary btn-small" id="aiDeactivateBtn" style="display:none;">取消激活</button>
+                  <button class="btn btn-secondary btn-small" id="aiDevDeactivateBtn" style="display:none;">取消开发者身份</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ai-sidebar-section">
+              <div class="ai-sidebar-section-title">使用额度</div>
+              <div class="ai-quota-card" id="aiQuotaCard">
+                <div class="ai-quota-row">
+                  <span class="ai-quota-label">今日已用</span>
+                  <span class="ai-quota-value"><span id="aiQuotaUsed">0</span> / <span id="aiQuotaLimit">40</span> 条</span>
+                </div>
+                <div class="ai-quota-bar">
+                  <div class="ai-quota-bar-fill" id="aiQuotaBarFill" style="width:0%"></div>
+                </div>
+                <div class="ai-quota-hint" id="aiQuotaHint">默认模式：每日 40 条 · 单条最长 2000 字</div>
+              </div>
+            </div>
+
+            <div class="ai-sidebar-section">
+              <div class="ai-sidebar-section-title">对话选项</div>
+
+              <div class="ai-setting-row">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="aiToggleCustomMode">
+                  <span class="toggle-slider"></span>
+                </label>
+                <div class="ai-setting-text">
+                  <div class="ai-setting-title">使用自定义模型</div>
+                  <div class="ai-setting-hint">填入自己的 API Key / 模型，绕过每日 40 条限制</div>
+                </div>
+              </div>
+
+              <div class="ai-setting-row">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="aiToggleDeepThinking">
+                  <span class="toggle-slider"></span>
+                </label>
+                <div class="ai-setting-text">
+                  <div class="ai-setting-title">启用深度思考</div>
+                  <div class="ai-setting-hint">模型返回思考过程（如模型支持）</div>
+                </div>
+              </div>
+
+              <div class="ai-setting-row">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="aiToggleWebSearch">
+                  <span class="toggle-slider"></span>
+                </label>
+                <div class="ai-setting-text">
+                  <div class="ai-setting-title">启用联网搜索</div>
+                  <div class="ai-setting-hint">向搜索引擎查询最新信息，注入到回答中（如模型支持）</div>
+                </div>
+              </div>
+
+              <div class="ai-custom-panel" id="aiCustomPanel" style="display:none;">
+                <div class="ai-custom-group">
+                  <label class="ai-custom-label">API Key</label>
+                  <input type="password" id="aiInputApiKey" class="ai-custom-input" placeholder="sk-...">
+                </div>
+                <div class="ai-custom-group">
+                  <label class="ai-custom-label">模型名称</label>
+                  <input type="text" id="aiInputModel" class="ai-custom-input" placeholder="例如 deepseek-chat / gpt-4o">
+                </div>
+                <div class="ai-custom-group">
+                  <label class="ai-custom-label">API BaseURL</label>
+                  <input type="text" id="aiInputBaseUrl" class="ai-custom-input" placeholder="https://api.deepseek.com/v1">
+                </div>
+                <div class="ai-custom-group">
+                  <button class="btn btn-primary btn-small" id="aiSaveSettingsBtn">保存设置</button>
+                  <button class="btn btn-secondary btn-small" id="aiResetSettingsBtn">恢复默认</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ai-sidebar-section">
+              <div class="ai-sidebar-section-title">快捷操作</div>
+              <div class="ai-actions">
+                <button class="btn btn-secondary btn-small btn-block" id="aiClearBtn">清空对话</button>
+                <button class="btn btn-secondary btn-small btn-block" id="aiShowDevBtn">启用开发者身份</button>
+              </div>
+            </div>
+
+            <div class="ai-sidebar-footer">
+              <div>数据仅保存在本地设备</div>
+              <div class="ai-sidebar-footer-sub">单次对话不超过 2000 字符</div>
+            </div>
+          </div>
+
+          <main class="ai-main">
+            <!-- 激活引导遮罩（默认模型需要激活码；自定义模型可绕过） -->
+            <div class="ai-activation-overlay" id="aiActivationOverlay" style="display:none;">
+              <div class="ai-activation-backdrop"></div>
+              <div class="ai-activation-panel">
+                <div class="ai-activation-panel-icon"><span data-icon="sparkle"></span></div>
+                <div class="ai-activation-panel-title">欢迎使用 Zenith AI 助手</div>
+                <div class="ai-activation-panel-sub">请将你在爱发电赞助后收到的订单号（out_trade_no）粘贴到下方，作为激活码使用。</div>
+
+                <div class="ai-activation-field">
+                  <label class="ai-activation-label">激活码（即爱发电订单号 out_trade_no）</label>
+                  <input type="text" id="aiCodeInput" class="ai-code-input" placeholder="例如 202506131234561234567890123" autocomplete="off">
+                </div>
+
+                <div class="ai-activation-panel-actions">
+                  <button class="btn btn-primary" id="aiActivateBtn">激活</button>
+                  <button class="btn btn-secondary" id="aiOpenIfdianBtn">前往爱发电赞助</button>
+                </div>
+
+                <div class="ai-activation-panel-status" id="aiActivationPanelStatus"></div>
+
+                <div class="ai-activation-panel-divider"><span>或</span></div>
+
+                <div class="ai-activation-panel-sub">已拥有自己的 API Key？可以开启"自定义模型"，直接使用你自己的 DeepSeek / OpenAI 兼容接口，不受激活限制。</div>
+                <div class="ai-activation-panel-actions">
+                  <button class="btn btn-secondary" id="aiToggleCustomFromOverlayBtn">切换到自定义模型</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 开发者身份遮罩（不显示密码明文） -->
+            <div class="ai-activation-overlay" id="aiDevOverlay" style="display:none;">
+              <div class="ai-activation-backdrop"></div>
+              <div class="ai-activation-panel">
+                <div class="ai-activation-panel-icon"><span data-icon="sparkle"></span></div>
+                <div class="ai-activation-panel-title">开发者身份</div>
+                <div class="ai-activation-panel-sub">输入开发者密码以启用开发者身份，启用后可无视每日消息上限与单条消息字符上限。</div>
+
+                <div class="ai-activation-field">
+                  <label class="ai-activation-label">开发者密码</label>
+                  <input type="password" id="aiDevCodeInput" class="ai-code-input" placeholder="请输入密码" autocomplete="off">
+                </div>
+
+                <div class="ai-activation-panel-actions">
+                  <button class="btn btn-primary" id="aiDevActivateBtn">启用</button>
+                  <button class="btn btn-secondary" id="aiDevCloseBtn">关闭</button>
+                </div>
+
+                <div class="ai-activation-panel-status" id="aiDevPanelStatus"></div>
+              </div>
+            </div>
+
+            <div class="ai-messages" id="aiMessages">
+              <div class="ai-empty" id="aiEmpty">
+                <div class="ai-empty-icon">
+                  <img src="assets/logo.png" alt="Zenith" class="ai-logo-img"/>
+                </div>
+                <div class="ai-empty-title" id="aiEmptyTitle"><span class="ai-typing-text"></span><span class="ai-typing-caret"></span></div>
+                <div class="ai-empty-sub">我可以帮你解答 Minecraft 相关问题，也可以提供一般技术支持。</div>
+                <div class="ai-empty-suggestions" id="aiEmptySuggestions">
+                  <button class="ai-suggestion" data-suggest="如何在 Zenith 中下载 Minecraft 1.21？">如何在 Zenith 中下载 Minecraft 1.21？</button>
+                  <button class="ai-suggestion" data-suggest="Fabric 和 Forge 有什么区别？">Fabric 和 Forge 有什么区别？</button>
+                  <button class="ai-suggestion" data-suggest="推荐一些值得玩的模组整合包">推荐一些值得玩的模组整合包</button>
+                  <button class="ai-suggestion" data-suggest="我的启动器打不开，怎么办？">我的启动器打不开，怎么办？</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ai-composer">
+              <div class="ai-composer-inner">
+                <textarea id="aiInput" class="ai-input" rows="1" placeholder="输入消息（Enter 发送，Ctrl+Enter 换行，最长 2000 字符）"></textarea>
+                <div class="ai-composer-meta">
+                  <span id="aiInputCounter">0 / 2000</span>
+                  <button class="btn btn-primary btn-send" id="aiSendBtn" disabled>
+                    <span data-icon="send"></span>
+                    <span>发送</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <!-- 模组管理页面 -->
+      <div id="view-mods" class="view">
+        <div class="mods-layout">
+          <!-- 左侧版本选择器 -->
+          <aside class="mods-version-selector" id="modsVersionSelector">
+            <div class="mods-version-header">
+              <h3>选择版本</h3>
+              <span class="mods-version-hint">必须先选择版本</span>
+            </div>
+            <div class="mods-version-list" id="modsVersionList">
+              <div class="mods-version-empty">加载中...</div>
+            </div>
+          </aside>
+
+          <!-- 右侧模组管理区 -->
+          <main class="mods-main" id="modsMain">
+            <div class="mods-card" id="modsCard">
+              <div class="mods-header">
+                <div class="mods-title-group">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small" style="color:var(--accent);">
+                    <path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" fill="currentColor"/>
+                  </svg>
+                  <span>模组与资源</span>
+                  <span class="mods-version-tag" id="modsVersionTag">未选择版本</span>
+                </div>
+                <div class="mods-header-actions">
+                  <button class="btn btn-primary btn-small" id="openModBrowserBtn">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14z" fill="currentColor"/></svg>
+                    <span>浏览下载</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mods-tabs" id="modsTabs">
+                <button class="mods-tab active" data-mods-tab="mod">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" fill="currentColor"/></svg>
+                  <span>模组</span>
+                  <span class="mods-tab-count" data-count-type="mod">0</span>
+                </button>
+                <button class="mods-tab" data-mods-tab="resourcepack">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>
+                  <span>资源包</span>
+                  <span class="mods-tab-count" data-count-type="resourcepack">0</span>
+                </button>
+                <button class="mods-tab" data-mods-tab="shaderpack">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2"/><circle cx="12" cy="12" r="6" fill="currentColor" opacity="0.5"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+                  <span>光影</span>
+                  <span class="mods-tab-count" data-count-type="shaderpack">0</span>
+                </button>
+                <button class="mods-tab" data-mods-tab="datapack">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" fill="currentColor"/></svg>
+                  <span>数据包</span>
+                  <span class="mods-tab-count" data-count-type="datapack">0</span>
+                </button>
+              </div>
+
+              <div class="mods-toolbar">
+                <input type="text" class="mods-search" id="modsSearchInput" placeholder="搜索名称...">
+                <button class="btn btn-secondary btn-small" id="modsRefreshBtn">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z" fill="currentColor"/></svg>
+                  <span>刷新</span>
+                </button>
+                <button class="btn btn-secondary btn-small" id="modsOpenFolderBtn">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" fill="currentColor"/></svg>
+                  <span>打开文件夹</span>
+                </button>
+              </div>
+
+              <div class="mods-content" id="modsContent">
+                <div class="mods-empty" id="modsEmpty" style="display:none;">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-hint"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" fill="currentColor"/></svg>
+                  <h3>暂无内容</h3>
+                  <p>点击上方「浏览下载」前往下载页面搜索并安装</p>
+                </div>
+                <div class="mods-list" id="modsList"></div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <!-- 赞助者名单页面 -->
+      <div id="view-sponsors" class="view">
+        <div class="sponsors-layout">
+
+          <!-- 顶部横幅 -->
+          <div class="sponsors-banner">
+            <div class="sponsors-banner-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-big">
+                <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6C19 16.5 12 21 12 21z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="sponsors-banner-content">
+              <h1>感谢每一位赞助者的支持 ❤</h1>
+              <p>是你们的支持让这个项目能够持续更新。所有赞助将用于项目维护、服务器运营与开发测试环境。</p>
+              <button class="btn btn-primary btn-large sponsors-banner-btn" id="sponsorBannerBtn">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small">
+                  <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6C19 16.5 12 21 12 21z" fill="currentColor"/>
+                </svg>
+                <span>前往赞助（ifdian.net）</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 赞助方式说明 -->
+          <div class="sponsors-card">
+            <h3 class="sponsors-card-title">如何赞助</h3>
+            <div class="sponsors-methods">
+              <div class="sponsors-method-item">
+                <div class="sponsors-method-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-small">
+                    <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6C19 16.5 12 21 12 21z" fill="currentColor" opacity="0.9"/>
+                  </svg>
+                </div>
+                <div>
+                  <strong>爱发电（ifdian.net）</strong>
+                  <small>按月订阅式赞助，支持多种方式</small>
+                </div>
+                <button class="btn btn-secondary btn-small sponsors-open-btn" data-sponsor-url="https://www.ifdian.net/a/JasonDeng">
+                  <span>前往</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 赞助者列表 -->
+          <div class="sponsors-card">
+            <div class="sponsors-card-header">
+              <h3 class="sponsors-card-title">赞助者名单</h3>
+              <div class="sponsors-card-actions">
+                <span class="sponsors-count" id="sponsorsCount">共 0 位</span>
+                <button class="btn btn-ghost btn-small" id="sponsorsRefreshBtn" title="刷新">
+                  <span>刷新</span>
+                </button>
+              </div>
+            </div>
+            <div class="sponsors-status" id="sponsorsStatus">正在从 ifdian.net 拉取赞助者名单...</div>
+            <div class="sponsors-list" id="sponsorsList">
+              <!-- 由 JS 动态填充 -->
+            </div>
+            <div class="sponsors-empty" id="sponsorsEmpty" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-hint">
+                <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6C19 16.5 12 21 12 21z" fill="currentColor"/>
+              </svg>
+              <h3>暂无赞助者</h3>
+              <p>成为第一位支持 Zenith 启动器的朋友吧！</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+
+    <!-- 全局版本号（放在 app-content 外部，避免被 view 的 transform 动画影响 fixed 定位） -->
+    <div class="app-version-badge" id="appVersionBadge">启动器 v…</div>
+
+    <!-- 新版本更新提示（右下角常驻，点击"关闭该提示"关闭，点击"更新"触发下载安装） -->
+    <div class="update-toast" id="updateToast" style="display:none;">
+      <div class="update-toast-inner">
+        <div class="update-toast-header">
+          <div class="update-toast-header-left">
+            <div class="update-toast-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <div class="update-toast-title">发现新版本 v<span id="toastVersion">…</span></div>
+              <div class="update-toast-sub" id="toastBody">新版本已发布，点击更新以获得最新功能与修复</div>
+            </div>
+          </div>
+          <button class="update-toast-close" id="closeToastBtn" title="关闭该提示" aria-label="关闭该提示">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
+              <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="update-toast-actions">
+          <button class="btn btn-secondary btn-small" id="laterUpdateBtn">关闭该提示</button>
+          <button class="btn btn-primary btn-small" id="installUpdateBtn">立即更新</button>
+        </div>
+        <div class="update-toast-progress" id="updateToastProgress" style="display:none;">
+          <div class="update-toast-progress-bar"><div class="update-toast-progress-fill" id="updateToastProgressFill"></div></div>
+          <div class="update-toast-progress-text" id="updateToastProgressText">准备中…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 陶瓦联机 - 全局模态框（放在 body 下，避免被祖先容器的 transform/overflow 裁剪） -->
+  <!-- 陶瓦联机核心下载模态框（进入页面时若未安装则弹出） -->
+  <div id="taowaDownloadModal" class="taowa-download-modal hidden">
+    <div class="taowa-download-overlay"></div>
+    <div class="taowa-download-card">
+      <div class="taowa-download-header">
+        <div class="taowa-download-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h2 class="taowa-download-title">正在下载陶瓦联机核心</h2>
+          <p class="taowa-download-desc">首次使用陶瓦联机需要下载 EasyTier 核心，请稍候…</p>
+        </div>
+      </div>
+      <div class="taowa-download-progress">
+        <div class="taowa-download-progress-bar">
+          <div class="taowa-download-progress-fill" id="taowaDownloadFill" style="width: 0%;"></div>
+        </div>
+        <div class="taowa-download-progress-text" id="taowaDownloadText">准备中…</div>
+      </div>
+      <div class="taowa-download-actions">
+        <span class="taowa-download-hint">下载完成后将自动启用陶瓦联机功能</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 陶瓦联机 - 卸载确认弹窗 -->
+  <div id="taowaUninstallModal" class="taowa-download-modal hidden">
+    <div class="taowa-download-overlay"></div>
+    <div class="taowa-download-card">
+      <div class="taowa-download-header">
+        <div class="taowa-download-icon" style="background: var(--danger);">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon">
+            <path d="M3 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6 6l1 14a2 2 0 002 2h6a2 2 0 002-2l1-14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h2 class="taowa-download-title">确认卸载陶瓦联机核心？</h2>
+          <p class="taowa-download-desc" id="taowaUninstallHint">将删除本地下载的 EasyTier 二进制（不影响启动器内置副本）。删除后进入陶瓦联机时可重新下载。</p>
+        </div>
+      </div>
+      <div class="taowa-download-actions" style="display: flex; gap: 8px; justify-content: flex-end;">
+        <button class="btn btn-secondary" id="taowaUninstallCancel">取消</button>
+        <button class="btn btn-danger" id="taowaUninstallConfirm">确认卸载</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 账号管理弹窗 -->
+  <div id="accountModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-overlay" data-close-modal="accountModal"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2>账号管理</h2>
+        <button class="modal-close" data-close-modal="accountModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="login-tabs">
+          <button class="login-tab active" data-login-tab="microsoft">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-tab">
+                <rect x="3" y="3" width="8" height="8" rx="1" fill="currentColor" opacity="1"/>
+                <rect x="13" y="3" width="8" height="8" rx="1" fill="currentColor" opacity="0.9"/>
+                <rect x="3" y="13" width="8" height="8" rx="1" fill="currentColor" opacity="0.8"/>
+                <rect x="13" y="13" width="8" height="8" rx="1" fill="currentColor" opacity="0.7"/>
+              </svg>
+            </span>
+            <span>微软账号</span>
+          </button>
+          <button class="login-tab" data-login-tab="offline">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-tab">
+                <circle cx="12" cy="8" r="4" fill="currentColor"/>
+                <path d="M12 14c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z" fill="currentColor" opacity="0.9"/>
+              </svg>
+            </span>
+            <span>离线登录</span>
+          </button>
+          <button class="login-tab" data-login-tab="authlib">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-icon-tab">
+                <path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span>外置登录</span>
+          </button>
+        </div>
+
+        <!-- 微软登录面板 -->
+        <div class="login-panel active" data-login-panel="microsoft">
+          <div id="microsoftAccounts" class="account-list">
+          </div>
+          <button class="btn btn-primary btn-full" id="addMicrosoftAccountBtn">
+            <span>添加微软账号</span>
+          </button>
+        </div>
+
+        <!-- 离线登录面板 -->
+        <div class="login-panel" data-login-panel="offline">
+          <div id="offlineAccounts" class="account-list">
+          </div>
+          <div class="form-group">
+            <label>玩家名</label>
+            <input type="text" id="offlineUsername" placeholder="请输入玩家名" maxlength="16">
+            <small class="form-hint">玩家名只能包含字母、数字和下划线</small>
+          </div>
+          <button class="btn btn-primary btn-full" id="addOfflineAccountBtn">
+            <span>使用此玩家名</span>
+          </button>
+        </div>
+
+        <!-- 外置登录面板 -->
+        <div class="login-panel" data-login-panel="authlib">
+          <div id="authlibAccounts" class="account-list">
+          </div>
+          <div class="form-group">
+            <label>服务器</label>
+            <select id="authlibServerSelect">
+            </select>
+          </div>
+          <div class="form-group">
+            <label>自定义服务器地址</label>
+            <input type="text" id="authlibServerUrl" placeholder="https://your-server.com/api/yggdrasil">
+          </div>
+          <div class="form-group">
+            <label>邮箱 / 玩家名</label>
+            <input type="text" id="authlibEmail" placeholder="请输入邮箱或玩家名">
+          </div>
+          <div class="form-group">
+            <label>密码</label>
+            <input type="password" id="authlibPassword" placeholder="请输入密码">
+          </div>
+          <button class="btn btn-primary btn-full" id="addAuthlibAccountBtn">
+            <span>登录</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 使用协议弹窗 -->
+  <div id="eulaModal" class="modal eula-modal hidden" aria-hidden="true">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog modal-dialog-agreement">
+      <div class="modal-header">
+        <h2>用户使用协议（EULA）</h2>
+      </div>
+      <div class="modal-body agreement-body" id="eulaBody">
+        <!-- 由 JS 填充 -->
+      </div>
+      <div class="modal-footer agreement-footer">
+        <button class="btn btn-secondary" id="eulaDisagreeBtn">不同意并退出</button>
+        <button class="btn btn-primary" id="eulaAgreeBtn">同意并继续</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 隐私政策弹窗 -->
+  <div id="privacyModal" class="modal eula-modal hidden" aria-hidden="true">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog modal-dialog-agreement">
+      <div class="modal-header">
+        <h2>隐私政策</h2>
+      </div>
+      <div class="modal-body agreement-body" id="privacyBody">
+        <!-- 由 JS 填充 -->
+      </div>
+      <div class="modal-footer agreement-footer">
+        <button class="btn btn-secondary" id="privacyDisagreeBtn">不同意并退出</button>
+        <button class="btn btn-primary" id="privacyAgreeBtn">同意并继续</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 版本选择弹窗 -->
+  <div id="versionModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-overlay" data-close-modal="versionModal"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2>选择游戏版本</h2>
+        <button class="modal-close" data-close-modal="versionModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="installedVersionList" class="version-list-modal">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 通用通知 -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/state.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/launch.js"></script>
+  <script src="js/login.js"></script>
+  <script src="js/download.js"></script>
+  <script src="js/addons.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/taowa.js"></script>
+  <script src="js/toolbox.js"></script>
+  <script src="js/mods.js"></script>
+  <script src="js/ai.js"></script>
+</body>
+</html>
