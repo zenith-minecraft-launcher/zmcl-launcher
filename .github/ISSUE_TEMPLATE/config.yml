@@ -1,14 +1,17 @@
 blank_issues_enabled: false
 contact_links:
-  - name: "旧版本优化反馈、新功能请求暂不受理"
-    url: "https://github.com/PCL-Community/PCL-CE/issues/new/choose"
-    about: "由于开发重心已经转移到 C# 新版本，所以目前不计划再对旧版做优化和新功能了。你可以在晚一些时候向新版本提交新功能请求。"
-  - name: "新版本新功能请求暂不受理"
-    url: "https://github.com/PCL-Community/PCL-CE/issues/new/choose"
-    about: "由于 C# 新版本还不稳定，我们暂时不受理对新版本提出的新功能请求，请在晚一些时候再来"
-  - name: 主页预设反馈
-    url: https://github.com/Meloong-Git/PCL2/discussions/categories/自定义主页
-    about: 提交与预设的主页（设置 → 个性化 → 主页预设）中的具体内容相关的反馈
-  - name: 提问 / 讨论
-    url: https://github.com/PCL-Community/PCL2-CE/discussions/new
-    about: 想问问或谈谈关于社区版的事情...
+  - name: 新功能投票
+    url: https://github.com/zenith-minecraft-launcher/zmcl-launcher/discussions/categories/%E6%8A%95%E7%A5%A8-votes
+    about: 新功能将在下一个版本更新中上线，前往投票页面为你想要的新功能投票。
+  - name: Q&A
+    url: https://github.com/zenith-minecraft-launcher/zmcl-launcher/discussions/categories/q-a
+    about: 在这里提出问题，将会有工作人员或其他玩家为你解答。
+  - name: 进入官方QQ群
+    url: https://qm.qq.com/q/BfdHrC2iY0
+    about: 想第一时间获取官方信息？加入我们的QQ群即可！
+  - name: 前往Zenith启动器官网
+    url: https://zenith.mkserver.xin
+    about: 看看我们的官网也是一个不错的选择！
+  - name: MK中国版服务器官网
+    url: https://china.mkserver.xin
+    about: 网易红石洲山头服务器，据说是Zenith开发团队创建的？！
