@@ -2,7 +2,7 @@ name: Minecraft崩溃
 description: 启动器导致的MC崩溃（非模组冲突）
 title: "[MC崩溃] "
 labels: ["新提交"]  # 固定标签
-type:["bug"]
+type: bug
 body:
   # 1. 议题类型（固定为 Bug，用户不能改）
   - type: markdown
