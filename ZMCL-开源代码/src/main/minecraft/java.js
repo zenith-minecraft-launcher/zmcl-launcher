@@ -1,0 +1,11 @@
+node_modules/
+dist/
+dist-release/
+dist-release-*/
+out/
+build/
+.env
+.env.local
+.vscode/
+.idea/
+*.log
