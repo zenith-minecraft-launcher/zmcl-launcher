@@ -2,7 +2,7 @@ name: "Minecraft 崩溃"
 description: "ZMCL 提示 “Minecraft 出现错误”，或游戏崩溃"
 title: "[MC崩溃]"
 labels: [新提交]
-type: [bug]
+type:[bug]
 body:
   - type: checkboxes
     id: "yml-1"
