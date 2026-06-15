@@ -6,7 +6,7 @@
 
 ## ✨ **项目简介**
 
-**Zenith** 是一个集游戏下载、版本管理、模组集成、联机对战、AI 助手于一体的 **全功能 Minecraft 启动器**。它提供了简洁优雅的用户界面，支持官方 / 离线 / Authlib 多种登录方式，集成了 Fabric、Forge、NeoForge、OptiFine 等主流模组加载器，并内置了基于 EasyTier 的 P2P 联机功能和基于 DeepSeek 的 AI 助手。
+**Zenith** 是一个集游戏下载、版本管理、模组集成、联机对战、AI 助手于一体的 **全功能 Minecraft 启动器**。它提供了简洁优雅的用户界面，支持官方 / 离线 / Authlib 多种登录方式，集成了 Fabric、Forge、NeoForge、OptiFine 等主流模组加载器，并内置了基于 EasyTier 的 P2P 联机功能和基于 DeepSeek 的 AI 助手(AI功能需赞助)。
 
 ---
 
