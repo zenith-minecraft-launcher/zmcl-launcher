@@ -1,3 +1,5 @@
+请选择您的语言以查看不同版本的README文件/Choose your language to check your language README file
+
 # **Zenith · Minecraft 启动器**
 
 > 一款现代化、功能完备的 Minecraft 启动器，基于 Electron 构建。
