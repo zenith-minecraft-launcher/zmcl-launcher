@@ -1,5 +1,5 @@
 # **请选择您的语言以查看不同版本的README文件/Choose your language to check your language README file** #
-[English](README.en.md) | [简体中文](README.md) | [Deutsch](README.de.md) | [Français](README.fr.md)
+[English](README.en.md) | [简体中文](README.md) | [Deutsch](README.de.md) | [Français](README.fr.md) |
 [日本語](README.ja.md) | [한국어](README.ko.md) | [Русский](README.ru.md) |
 [繁體中文](README.zh-fanti.md) | [文言文](README.zh-wenyanwen.md) | [粵語](README.zh-yue.md)
 </div>
